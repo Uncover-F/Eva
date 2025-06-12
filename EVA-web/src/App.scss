@@ -182,11 +182,95 @@ button, .btn {
   border: none;
   padding: 10px 20px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
   border-radius: 5px;
   cursor: pointer;
+  font-family: var(--font-family, 'Space Mono', monospace);
+  letter-spacing: 0.02em;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #0001;
 }
 
 button:hover, .btn:hover {
   background-color: var(--Red-400);
+}
+
+.api-key-modal {
+  position: absolute;
+  top: 60px;
+  right: 24px;
+  z-index: 1000;
+  background: var(--background, #fff);
+  padding: 2rem 2rem 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #0003;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 340px;
+  font-family: "Space Mono", monospace;
+  border: 1.5px solid var(--accent-blue, #4f9aff);
+}
+
+.api-key-modal label {
+  font-size: 1.1rem;
+  color: var(--gray-800, #222);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  align-self: flex-start;
+}
+
+.api-key-input-row {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.api-key-input {
+  flex: 1;
+  padding: 0.7rem 1.1rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--accent-blue, #4f9aff);
+  outline: none;
+  font-family: "Space Mono", monospace;
+  background: var(--gray-200, #f5f7fa);
+  color: var(--gray-900, #222);
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.api-key-input:focus {
+  border-color: var(--accent-blue-active, #3296ff);
+  box-shadow: 0 0 0 2px var(--accent-blue-active-bg, #85c8ff);
+}
+
+.api-key-modal .btn {
+  padding: 0.7rem 1.3rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  background: var(--accent-blue, #4f9aff);
+  color: #fff;
+  border: none;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  transition: background 0.2s;
+  margin-left: 0.5rem;
+}
+
+.api-key-modal .btn:hover {
+  background: var(--accent-blue-active, #3296ff);
+}
+
+.api-key-modal .close-btn {
+  background: none;
+  border: none;
+  color: var(--gray-700, #555);
+  font-size: 1.5rem;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
 }
