@@ -159,9 +159,6 @@ function AltairComponent() {
         <button type="submit" className="altair-submit-btn" disabled={!connected}>
           Send
         </button>
-        <button type="button" className="altair-clear-btn" onClick={handleClear}>
-          Clear
-        </button>
       </form>
       <div className="vega-embed" ref={embedRef} />
       {returnedText && (

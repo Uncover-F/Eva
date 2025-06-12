@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2024 Google LLC
  *
@@ -72,12 +73,15 @@ function ControlTray({
   const renderCanvasRef = useRef<HTMLCanvasElement>(null);
   const connectButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { client, connected, connect, disconnect, volume } =
+  const { client, connected, connect, disconnect, volume, setConfig } =
     useLiveAPIContext();
 
   // State for tracking elapsed time
   const [elapsedTime, setElapsedTime] = useState(0); // in seconds
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null); // for controlling the timer
+
+  // Voice selection state
+  const [voice, setVoice] = useState<string>("Kore");
 
   useEffect(() => {
     if (!connected && connectButtonRef.current) {
@@ -176,70 +180,128 @@ function ControlTray({
     }
   }, [connected]);
 
+  // Update voice in live API config when voice state changes
+  useEffect(() => {
+    if (connected && setConfig) {
+      console.log("Updating voice to:", voice);
+      setConfig({
+        model: "models/gemini-2.0-flash-exp",
+        generationConfig: {
+          responseModalities: "audio",
+          speechConfig: {
+            voiceConfig: {
+              prebuiltVoiceConfig: {
+                voiceName: voice,
+              },
+            },
+          },
+        },
+        systemInstruction: {
+          parts: [
+            {
+              text: 'You are Lume, a helpful desktop assistant. You act human and show emotion. You do not constantly resay or verify what the user is saying. You take action.',
+            },
+          ],
+        },
+        tools: [
+          { googleSearch: {} },
+          { functionDeclarations: [] }, 
+        ],
+      });
+    }
+  }, [voice, connected, setConfig]);
+
+  // Log voice changes on select change
+  const handleVoiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log("Voice selected:", e.target.value);
+    setVoice(e.target.value);
+  };
+
   return (
-    <section className="control-tray">
-      <canvas style={{ display: "none" }} ref={renderCanvasRef} />
-      <nav className={cn("actions-nav", { disabled: !connected })}>
-        <button
-          className={cn("action-button mic-button")}
-          onClick={() => setMuted(!muted)}
-        >
-          {!muted ? (
-            <span className="material-symbols-outlined filled">mic</span>
-          ) : (
-            <span className="material-symbols-outlined filled">mic_off</span>
-          )}
-        </button>
-
-        <div className="action-button no-action outlined">
-          <AudioPulse volume={volume} active={connected} hover={false} />
-        </div>
-        
-        {/* Stopwatch display */}
-      <div className={cn("stopwatch-container", { paused: !connected })}>
-        <div className="stopwatch">
-          <span>{new Date(elapsedTime * 1000).toISOString().substr(11, 8)}</span>
-        </div>
-      </div>
-      
-        {supportsVideo && (
-          <>
-            <MediaStreamButton
-              isStreaming={screenCapture.isStreaming}
-              start={changeStreams(screenCapture)}
-              stop={changeStreams()}
-              onIcon="cancel_presentation"
-              offIcon="present_to_all"
-            />
-            <MediaStreamButton
-              isStreaming={webcam.isStreaming}
-              start={changeStreams(webcam)}
-              stop={changeStreams()}
-              onIcon="videocam_off"
-              offIcon="videocam"
-            />
-          </>
-        )}
-        {children}
-      </nav>
-
-      
-
-      <div className={cn("connection-container", { connected })}>
-        <div className="connection-button-container">
-          <button
-            ref={connectButtonRef}
-            className={cn("action-button connect-toggle", { connected })}
-            onClick={connected ? disconnect : connect}
+    <>
+      <section className="control-tray">
+        <div className="voice-select-top-wrapper">
+          <label htmlFor="voice-select" className="voice-select-label">
+            Voice:
+          </label>
+          <select
+            id="voice-select"
+            className="voice-select"
+            value={voice}
+            onChange={handleVoiceChange}
+            disabled={connected}
+            aria-label="Select voice"
           >
-            <span className="material-symbols-outlined filled">
-              {connected ? "pause" : "play_arrow"}
-            </span>
-          </button>
+            <option value="Kore">Kore</option>
+            <option value="Charon">Charon</option>
+            <option value="Puck">Puck</option>
+            <option value="Fenrir">Fenrir</option>
+            <option value="Aoede">Aoede</option>
+          </select>
+
         </div>
-        <span className="text-indicator">Streaming</span>
-      </div>
-    </section>
+        <canvas style={{ display: "none" }} ref={renderCanvasRef} />
+
+        <nav className={cn("actions-nav", { disabled: !connected })}>
+          <button
+            className={cn("action-button mic-button")}
+            onClick={() => setMuted(!muted)}
+          >
+            {!muted ? (
+              <span className="material-symbols-outlined filled">mic</span>
+            ) : (
+              <span className="material-symbols-outlined filled">mic_off</span>
+            )}
+          </button>
+
+          <div className="action-button no-action outlined">
+            <AudioPulse volume={volume} active={connected} hover={false} />
+          </div>
+
+          {/* Stopwatch display */}
+          <div className={cn("stopwatch-container", { paused: !connected })}>
+            <div className="stopwatch">
+              <span>{new Date(elapsedTime * 1000).toISOString().substr(11, 8)}</span>
+            </div>
+          </div>
+
+          {supportsVideo && (
+            <>
+              <MediaStreamButton
+                isStreaming={screenCapture.isStreaming}
+                start={changeStreams(screenCapture)}
+                stop={changeStreams()}
+                onIcon="cancel_presentation"
+                offIcon="present_to_all"
+              />
+              <MediaStreamButton
+                isStreaming={webcam.isStreaming}
+                start={changeStreams(webcam)}
+                stop={changeStreams()}
+                onIcon="videocam_off"
+                offIcon="videocam"
+              />
+            </>
+          )}
+          {children}
+        </nav>
+
+        <div className={cn("connection-container", { connected })}>
+          <div className="connection-button-container">
+            <button
+              ref={connectButtonRef}
+              className={cn("action-button connect-toggle", { connected })}
+              onClick={connected ? disconnect : connect}
+            >
+              <span className="material-symbols-outlined filled">
+                {connected ? "pause" : "play_arrow"}
+              </span>
+            </button>
+          </div>
+          <span className="text-indicator">Streaming</span>
+        </div>
+      </section>
+    </>
   );
 }
 
