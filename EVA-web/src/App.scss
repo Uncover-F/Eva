@@ -1,0 +1,192 @@
+:root {
+  --text: #333333;
+  --gray-200: #e1e1e1;
+  --gray-300: #d1d1d1;
+  --gray-500: #b1b1b1;
+  --gray-600: #888888;
+  --gray-700: #555555;
+  --gray-800: #333333;
+  --gray-900: #1a1a1a;
+  --gray-1000: #0d0d0d;
+  --border-stroke: #cccccc;
+  --accent-blue: #4f9aff;
+  --accent-blue-active-bg: #006bb3;
+  --accent-blue-active: #85c8ff;
+  --accent-blue-headers: #3296ff;
+  --accent-green: #70d180;
+
+  --midnight-blue: #006bb3;
+  --blue-30: #66b0ff;
+
+  --accent-red: #ff7f00;
+
+  --background: #ffffff;
+  --color: var(--text);
+
+  scrollbar-color: var(--gray-300) var(--background);
+  scrollbar-width: thin;
+
+  --font-family: "Space Mono", monospace;
+
+  /* */
+  --Neutral-00: #ffffff;
+  --Neutral-5: #f8f9fa;
+  --Neutral-10: #f1f3f5;
+  --Neutral-15: #e9ecef;
+  --Neutral-20: #dee2e6;
+  --Neutral-30: #ced4da;
+  --Neutral-50: #adb5bd;
+  --Neutral-60: #868e96;
+  --Neutral-80: #495057;
+  --Neutral-90: #343a40;
+
+  --Green-500: #28a745;
+  --Green-700: #218838;
+
+  --Blue-500: #007bff;
+  --Blue-800: #0056b3;
+
+  --Red-400: #ff6f61;
+  --Red-500: #e03c00;
+  --Red-600: #dc3545;
+  --Red-700: #c82333;
+}
+
+body {
+  font-family: "Space Mono", monospace;
+  background: var(--Neutral-00);
+  color: var(--text);
+  background-attachment: fixed;
+}
+
+.material-symbols-outlined {
+  &.filled {
+    font-variation-settings:
+      "FILL" 1,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 24;
+  }
+}
+
+.space-mono-regular {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.space-mono-bold {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.space-mono-regular-italic {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.space-mono-bold-italic {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.hidden {
+  display: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.h-screen-full {
+  height: 100vh;
+}
+
+.w-screen-full {
+  width: 100vw;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+@media (prefers-reduced-motion: no-preference) {}
+
+.streaming-console {
+  background: var(--Neutral-5);
+  color: var(--Neutral-90);
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+
+  a,
+  a:visited,
+  a:active {
+    color: var(--Neutral-90);
+  }
+
+  .disabled {
+    pointer-events: none;
+
+    >* {
+      pointer-events: none;
+    }
+  }
+
+  main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 1.5rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .main-app-area {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .function-call {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50%;
+    overflow-y: auto;
+  }
+}
+
+/* video player */
+.stream {
+  flex-grow: 0;
+  max-width: 60%;
+  max-height: 60vh;
+  border-radius: 32px;
+  object-fit: contain;
+}
+
+/* Buttons */
+button, .btn {
+  background-color: var(--accent-red);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--Red-400);
+}
