@@ -46,7 +46,7 @@ export type LiveGenerationConfig = GenerationConfig & {
   speechConfig?: {
     voiceConfig?: {
       prebuiltVoiceConfig?: {
-        voiceName: "Puck" | "Charon" | "Kore" | "Fenrir" | "Aoede" | string;
+        voiceName: "Kore" | "Charon" | "Puck" | "Fenrir" | "Aoede" | string;
       };
     };
   };
