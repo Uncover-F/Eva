@@ -48,6 +48,13 @@ function AltairComponent() {
       model: "models/gemini-2.0-flash-exp",
       generationConfig: {
         responseModalities: "audio",
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: {
+              voiceName: "Kore",
+            },
+          },
+        },
       },
       systemInstruction: {
         parts: [
